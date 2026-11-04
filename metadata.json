@@ -1,0 +1,6 @@
+{
+  "name": "LUMIÈRE — Minimalist Luxury Boutique",
+  "description": "Modern minimalist luxury fashion boutique featuring curated seasonal collections, instant shopping cart, seamless checkout, and an administrative studio for uploading and managing clothing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
