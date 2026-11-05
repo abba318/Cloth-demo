@@ -13,6 +13,7 @@ import { AdminPanelModal } from '../components/AdminPanelModal';
 import { StorySection } from '../components/StorySection';
 import { Footer } from '../components/Footer';
 import { Toast } from '../components/Toast';
+import { AiChatbot } from '../components/AiChatbot';
 import { Product, CartItem, ColorOption, ToastMessage, OrderConfirmation } from '../lib/types';
 import { INITIAL_PRODUCTS } from '../lib/products-data';
 import { ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
@@ -29,7 +30,13 @@ export default function Home() {
         const saved = localStorage.getItem('lumiere_products');
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.map((p: Product) => ({
+              ...p,
+              price: p.price < 1000 ? p.price * 1000 : p.price,
+              originalPrice: p.originalPrice && p.originalPrice < 1000 ? p.originalPrice * 1000 : p.originalPrice,
+            }));
+          }
         }
       } catch (e) {}
     }
@@ -41,7 +48,18 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('lumiere_cart');
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsedCart = JSON.parse(saved);
+          if (Array.isArray(parsedCart)) {
+            return parsedCart.map((item: CartItem) => ({
+              ...item,
+              product: {
+                ...item.product,
+                price: item.product.price < 1000 ? item.product.price * 1000 : item.product.price,
+              },
+            }));
+          }
+        }
       } catch (e) {}
     }
     return [];
@@ -466,6 +484,13 @@ export default function Home() {
         onDeleteProduct={handleDeleteProduct}
         onToggleStock={handleToggleStock}
         onResetCatalog={handleResetCatalog}
+      />
+
+      {/* AI Fashion Stylist & Concierge Chatbot */}
+      <AiChatbot
+        products={products}
+        onQuickView={(p) => setActiveQuickViewProduct(p)}
+        onAddToCart={handleAddToCart}
       />
     </div>
   );

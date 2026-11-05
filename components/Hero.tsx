@@ -98,7 +98,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick }) => {
                 White-Glove Delivery
               </h3>
               <p className="text-xs text-[#71717A] leading-relaxed">
-                Complimentary global courier on orders over $200. Archival linen dust bags and gold-embossed boxes.
+                Complimentary express courier on orders over ₦250,000. Archival linen dust bags and gold-embossed boxes.
               </p>
             </div>
           </div>

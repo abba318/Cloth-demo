@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, Trash2, ShoppingBag, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
 import { CartItem } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -30,8 +31,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const discountRate = appliedPromo === 'LUMIERE10' ? 0.10 : 0;
   const discountAmount = subtotal * discountRate;
-  const freeShippingThreshold = 200;
-  const shipping = subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 25;
+  const freeShippingThreshold = 250000;
+  const shipping = subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 15000;
   const total = subtotal - discountAmount + shipping;
 
   const handleApplyPromo = (e: React.FormEvent) => {
@@ -81,7 +82,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             ) : (
               <div>
                 <p className="text-[#52525B] mb-1.5">
-                  Add <span className="font-semibold text-[#18181B] tabular-nums">${(freeShippingThreshold - subtotal).toFixed(2)}</span> more for Complimentary Courier.
+                  Add <span className="font-semibold text-[#18181B] tabular-nums">{formatNaira(freeShippingThreshold - subtotal)}</span> more for Complimentary Courier.
                 </p>
                 <div className="w-full bg-[#E5DFD3] h-1.5 rounded-full overflow-hidden">
                   <div
@@ -174,7 +175,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       </div>
 
                       <span className="text-sm font-semibold text-[#18181B] tabular-nums">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {formatNaira(item.product.price * item.quantity)}
                       </span>
                     </div>
                   </div>
@@ -220,23 +221,23 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="space-y-1.5 text-xs text-[#71717A] mb-4">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="text-[#18181B] font-medium tabular-nums">${subtotal.toFixed(2)}</span>
+                  <span className="text-[#18181B] font-medium tabular-nums">{formatNaira(subtotal)}</span>
                 </div>
                 {appliedPromo && (
                   <div className="flex justify-between text-[#2E5E4E]">
                     <span>Discount (10%)</span>
-                    <span className="font-medium tabular-nums">-${discountAmount.toFixed(2)}</span>
+                    <span className="font-medium tabular-nums">-{formatNaira(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Worldwide Courier</span>
+                  <span>Express Courier</span>
                   <span className="text-[#18181B] font-medium tabular-nums">
-                    {shipping === 0 ? 'Complimentary' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'Complimentary' : formatNaira(shipping)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-semibold text-[#18181B] pt-2 border-t border-[#ECE6DB]">
                   <span>Total Due</span>
-                  <span className="tabular-nums">${total.toFixed(2)}</span>
+                  <span className="tabular-nums">{formatNaira(total)}</span>
                 </div>
               </div>
 

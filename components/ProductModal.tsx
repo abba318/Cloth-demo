@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Heart, ShoppingBag, Check, ShieldCheck, RefreshCw } from 'lucide-react';
 import { Product, ColorOption } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface ProductModalProps {
   product: Product | null;
@@ -94,11 +95,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               {/* Price */}
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-xl sm:text-2xl font-semibold text-[#18181B] tabular-nums">
-                  ${product.price.toFixed(2)}
+                  {formatNaira(product.price)}
                 </span>
                 {product.originalPrice && (
                   <span className="text-sm text-[#A1A1AA] line-through tabular-nums">
-                    ${product.originalPrice.toFixed(2)}
+                    {formatNaira(product.originalPrice)}
                   </span>
                 )}
                 <span className="text-xs text-[#71717A] tracking-wider uppercase">Taxes included</span>
@@ -215,7 +216,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 ) : (
                   <>
                     <ShoppingBag className="w-4 h-4 text-[#C8A27C]" />
-                    <span>Add to Bag — ${(product.price * quantity).toFixed(2)}</span>
+                    <span>Add to Bag — {formatNaira(product.price * quantity)}</span>
                   </>
                 )}
               </button>

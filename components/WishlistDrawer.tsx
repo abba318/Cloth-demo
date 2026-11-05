@@ -3,6 +3,7 @@
 import React from 'react';
 import { X, Heart, ShoppingBag, Trash2 } from 'lucide-react';
 import { Product, ColorOption } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface WishlistDrawerProps {
   isOpen: boolean;
@@ -97,7 +98,7 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
 
                     <div className="flex items-center justify-between gap-2 pt-2">
                       <span className="text-sm font-semibold text-[#18181B] tabular-nums">
-                        ${product.price.toFixed(2)}
+                        {formatNaira(product.price)}
                       </span>
                       <button
                         onClick={() => {

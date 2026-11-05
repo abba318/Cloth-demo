@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Heart, ShoppingBag, Eye, Check } from 'lucide-react';
 import { Product, ColorOption } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface ProductCardProps {
   product: Product;
@@ -153,11 +154,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex items-baseline gap-1.5 shrink-0">
             {product.originalPrice && (
               <span className="text-xs text-[#A1A1AA] line-through tabular-nums">
-                ${product.originalPrice.toFixed(2)}
+                {formatNaira(product.originalPrice)}
               </span>
             )}
             <span className="text-sm font-semibold text-[#18181B] tabular-nums">
-              ${product.price.toFixed(2)}
+              {formatNaira(product.price)}
             </span>
           </div>
         </div>

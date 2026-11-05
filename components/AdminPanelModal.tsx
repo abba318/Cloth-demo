@@ -18,6 +18,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import { Product, ColorOption } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface AdminPanelModalProps {
   isOpen: boolean;
@@ -73,7 +74,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   // New Cloth Form State
   const [clothTitle, setClothTitle] = useState('');
   const [clothCategory, setClothCategory] = useState<Product['category']>('Dresses');
-  const [clothPrice, setClothPrice] = useState<string>('320');
+  const [clothPrice, setClothPrice] = useState<string>('320000');
   const [clothOriginalPrice, setClothOriginalPrice] = useState<string>('');
   const [clothFabric, setClothFabric] = useState('100% Organic Mulberry Silk');
   const [clothDescription, setClothDescription] = useState(
@@ -143,7 +144,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
       alert('Please upload or select an image for this cloth.');
       return;
     }
-    const parsedPrice = parseFloat(clothPrice) || 120;
+    const parsedPrice = parseFloat(clothPrice) || 150000;
     const parsedOriginalPrice = clothOriginalPrice ? parseFloat(clothOriginalPrice) : undefined;
 
     const newProduct: Product = {
@@ -508,15 +509,16 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
 
                       <div>
                         <label className="block text-xs uppercase tracking-wider text-[#52525B] mb-1 font-semibold">
-                          Price ($ USD) *
+                          Price (₦ Naira) *
                         </label>
                         <input
                           type="number"
-                          min="1"
-                          step="0.01"
+                          min="1000"
+                          step="1000"
                           required
                           value={clothPrice}
                           onChange={(e) => setClothPrice(e.target.value)}
+                          placeholder="e.g. 350000"
                           className="w-full px-3 py-2 text-xs bg-white border border-[#D4CEBF] focus:outline-hidden"
                         />
                       </div>
@@ -725,7 +727,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           </td>
                           <td className="p-3 text-[#52525B]">{item.category}</td>
                           <td className="p-3 font-semibold text-[#18181B] tabular-nums">
-                            ${item.price.toFixed(2)}
+                            {formatNaira(item.price)}
                           </td>
                           <td className="p-3">
                             <button

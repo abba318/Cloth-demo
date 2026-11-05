@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { X, Search, ArrowRight } from 'lucide-react';
 import { Product } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -114,7 +115,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-sm font-semibold text-[#18181B] tabular-nums">
-                      ${product.price.toFixed(2)}
+                      {formatNaira(product.price)}
                     </span>
                     <ArrowRight className="w-4 h-4 text-[#A1A1AA] group-hover:text-[#18181B] group-hover:translate-x-1 transition-all" />
                   </div>

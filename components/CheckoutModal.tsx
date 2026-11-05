@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, ShieldCheck, Truck, CreditCard, ArrowLeft } from 'lucide-react';
 import { CartItem, OrderConfirmation } from '../lib/types';
+import { formatNaira } from '../lib/utils';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -31,7 +32,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
-  const [country, setCountry] = useState('United States');
+  const [country, setCountry] = useState('Nigeria');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card');
   const [confirmedOrder, setConfirmedOrder] = useState<OrderConfirmation | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -39,8 +40,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   if (!isOpen) return null;
 
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const shipping = subtotal >= 200 ? 0 : 25;
-  const tax = (subtotal - discountAmount) * 0.08;
+  const shipping = subtotal >= 250000 ? 0 : 15000;
+  const tax = Math.round((subtotal - discountAmount) * 0.075); // 7.5% VAT
   const total = subtotal - discountAmount + shipping + tax;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -183,13 +184,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       onChange={(e) => setCountry(e.target.value)}
                       className="w-full px-3 py-2 text-xs bg-white border border-[#D4CEBF] focus:outline-hidden focus:border-[#18181B]"
                     >
+                      <option>Nigeria</option>
+                      <option>United Kingdom</option>
                       <option>United States</option>
                       <option>France</option>
-                      <option>United Kingdom</option>
-                      <option>Japan</option>
-                      <option>Germany</option>
                       <option>Canada</option>
-                      <option>Switzerland</option>
+                      <option>South Africa</option>
+                      <option>Ghana</option>
                     </select>
                   </div>
                 </div>
@@ -261,27 +262,27 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <div className="p-4 bg-[#F2EFE8] border border-[#E5DFD3] space-y-2 text-xs">
               <div className="flex justify-between text-[#71717A]">
                 <span>Items Subtotal</span>
-                <span className="tabular-nums font-medium text-[#18181B]">${subtotal.toFixed(2)}</span>
+                <span className="tabular-nums font-medium text-[#18181B]">{formatNaira(subtotal)}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-[#2E5E4E]">
                   <span>Promotion ({promoApplied})</span>
-                  <span className="tabular-nums font-medium">-${discountAmount.toFixed(2)}</span>
+                  <span className="tabular-nums font-medium">-{formatNaira(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between text-[#71717A]">
-                <span>Global Courier Express</span>
+                <span>Global Express Courier</span>
                 <span className="tabular-nums font-medium text-[#18181B]">
-                  {shipping === 0 ? 'Complimentary' : `$${shipping.toFixed(2)}`}
+                  {shipping === 0 ? 'Complimentary' : formatNaira(shipping)}
                 </span>
               </div>
               <div className="flex justify-between text-[#71717A]">
-                <span>Estimated VAT / Duties (8%)</span>
-                <span className="tabular-nums font-medium text-[#18181B]">${tax.toFixed(2)}</span>
+                <span>Estimated VAT (7.5%)</span>
+                <span className="tabular-nums font-medium text-[#18181B]">{formatNaira(tax)}</span>
               </div>
               <div className="flex justify-between text-base font-semibold text-[#18181B] pt-2 border-t border-[#D9D3C5]">
                 <span>Total Amount</span>
-                <span className="tabular-nums">${total.toFixed(2)}</span>
+                <span className="tabular-nums">{formatNaira(total)}</span>
               </div>
             </div>
 
@@ -323,7 +324,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </div>
               <div className="flex justify-between text-[#71717A] pt-2 border-t border-[#D9D3C5]">
                 <span>Total Charged:</span>
-                <span className="text-sm font-semibold text-[#18181B] tabular-nums">${confirmedOrder?.total.toFixed(2)}</span>
+                <span className="text-sm font-semibold text-[#18181B] tabular-nums">{confirmedOrder ? formatNaira(confirmedOrder.total) : ''}</span>
               </div>
             </div>
 
